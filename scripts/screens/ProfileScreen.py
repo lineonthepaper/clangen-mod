@@ -40,6 +40,8 @@ from ..ui.generate_button import ButtonStyles, get_button_dict
 from ..ui.get_arrow import get_arrow
 from ..ui.icon import Icon
 
+from pathlib import Path
+
 
 # ---------------------------------------------------------------------------- #
 #             change how accessory info displays on cat profiles               #
@@ -134,6 +136,16 @@ class ProfileScreen(Screens):
     # helps with exiting the screen
     open_tab = None
 
+    # import possible fav colours
+
+    possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
+    possible_colours = {}
+    with open(possible_colours_path, "r") as f:
+        i = 0
+        for line in f:
+            possible_colours[i] = line.rstrip("\n")
+            i += 1
+
     def __init__(self, name=None):
         super().__init__(name)
         self.condition_data = {}
@@ -180,6 +192,7 @@ class ProfileScreen(Screens):
         self.the_cat = None
         self.checkboxes = {}
         self.profile_elements = {}
+        
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
@@ -243,6 +256,29 @@ class ProfileScreen(Screens):
                 self.profile_elements["favourite_button"].set_tooltip(
                     "Remove favorite" if self.the_cat.favourite else "Mark as favorite"
                 )
+                if self.the_cat.favourite:
+                    self.the_cat.favourite_colour = 0
+                    self.profile_elements["favourite_colour"].change_object_id(
+                    "#" + self.possible_colours[self.the_cat.favourite_colour]
+                    )
+                    self.profile_elements["favourite_colour"].set_tooltip("Click to toggle")
+                    # print("now faved colour:", self.possible_colours[self.the_cat.favourite_colour])
+                else:
+                    self.the_cat.favourite_colour = None
+                    self.profile_elements["favourite_colour"].change_object_id("#no_colour")
+                    self.profile_elements["favourite_colour"].set_tooltip(None)
+
+            # what to do if favourite_colour is clicked
+            elif event.ui_element == self.profile_elements["favourite_colour"]:
+                if self.the_cat.favourite:
+                    self.the_cat.favourite_colour = (self.the_cat.favourite_colour + 1) % len(self.possible_colours)
+                    self.profile_elements["favourite_colour"].change_object_id(
+                        "#" + self.possible_colours[self.the_cat.favourite_colour]
+                    )
+                    self.profile_elements["favourite_colour"].set_tooltip("Click to toggle")
+                    
+                    # print("now faved colour:", self.possible_colours[self.the_cat.favourite_colour])
+            
             else:
                 self.handle_tab_events(event)
 
@@ -708,6 +744,25 @@ class ProfileScreen(Screens):
         self.profile_elements["favourite_button"].rebuild()
         del favorite_button_rect
 
+        favourite_colour_rect = ui_scale(pygame.Rect((0, 0), (28, 28)))
+        favourite_colour_rect.topright = ui_scale_offset((-5, 146))
+        self.profile_elements["favourite_colour"] = UIImageButton(
+            favourite_colour_rect,
+            "",
+            object_id="#" + self.possible_colours[self.the_cat.favourite_colour] if self.the_cat.favourite else "#no_colour",
+            manager=MANAGER,
+            tool_tip_text="Click to toggle"
+            if self.the_cat.favourite
+            else None,
+            starting_height=2,
+            anchors={
+                "right": "right",
+                "right_target": self.profile_elements["favourite_button"],
+            },
+        )
+        self.profile_elements["favourite_colour"].rebuild()
+        del favourite_colour_rect
+
         # Determine where the next and previous cat buttons lead
         (
             self.next_cat,
@@ -774,8 +829,26 @@ class ProfileScreen(Screens):
 
         # PELT TYPE
         output += "pelt: " + the_cat.pelt.name.lower()
+
+        # if tortie
+        if the_cat.pelt.tortiebase != None:
+            output += f" ({the_cat.pelt.tortiebase})".lower()
         # NEWLINE ----------
         output += "\n"
+
+        # added: PELT COLOUR / COLOR
+        output += "pelt colour: " + f"{the_cat.pelt.colour}".lower()
+        # NEWLINE ----------
+        output += "\n"
+
+        # added: skin
+        output += "skin: " + f"{the_cat.pelt.skin}".lower()
+        # NEWLINE ----------
+        output += "\n"
+
+        # added: shiny check
+        if the_cat.pelt.tortiebase and (the_cat.pelt.skin.lower()=="marbled" or the_cat.pelt.eye_colour2 or the_cat.gender == "male"):
+            output += "shiny!\n"
 
         # PELT LENGTH
         output += "fur length: " + the_cat.pelt.length
@@ -1275,7 +1348,8 @@ class ProfileScreen(Screens):
         else:
             text = str(self.the_cat.name) + "'s past history is unknown."
 
-        if not self.the_cat.dead and self.the_cat.status not in [
+        # if not self.the_cat.dead and self.the_cat.status not in [
+        if self.the_cat.status not in [
             "kittypet",
             "loner",
             "rogue",

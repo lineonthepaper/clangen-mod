@@ -10,6 +10,7 @@ import os.path
 import sys
 from random import choice, randint, sample, random, getrandbits, randrange
 from typing import Dict, List, Any, Callable
+from typing import Dict, List, Any
 
 import ujson  # type: ignore
 
@@ -42,6 +43,7 @@ from scripts.utility import (
     leader_ceremony_text_adjust,
 )
 
+import math
 
 class Cat:
     """The cat class."""
@@ -244,6 +246,7 @@ class Cat:
         # the next save.
 
         self.favourite = False
+        self.favourite_colour = None
 
         self.specsuffix_hidden = specsuffix_hidden
         self.inheritance = None
@@ -3240,6 +3243,12 @@ class Cat:
             )
         elif game.sort_type == "exp":
             given_list.sort(key=lambda x: x.experience, reverse=True)
+        elif game.sort_type == "favs":
+            for cat in given_list:
+                if cat.favourite and cat.favourite_colour is None:
+                    print(f"setting {cat.name} colour to 0")
+                    cat.favourite_colour = 0
+            given_list.sort(key=lambda x: x.favourite_colour if x.favourite else math.inf)
         elif game.sort_type == "death":
             given_list.sort(key=lambda x: -1 * int(x.dead_for))
 
@@ -3271,6 +3280,8 @@ class Cat:
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: int(x.ID))
             elif game.sort_type == "reverse_id":
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: -1 * int(x.ID))
+            elif game.sort_type == "favs":
+                bisect.insort(Cat.all_cats_list, c, key=lambda x: x.favourite_colour if x.favourite else math.inf)
             elif game.sort_type == "death":
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: -1 * int(x.dead_for))
         except (TypeError, NameError):
@@ -3448,6 +3459,7 @@ class Cat:
                 "opacity": self.pelt.opacity,
                 "prevent_fading": self.prevent_fading,
                 "favourite": self.favourite,
+                "favourite_colour": self.favourite_colour,
             }
 
     def determine_next_and_previous_cats(self, filter_func: Callable[[Cat], bool] = None):

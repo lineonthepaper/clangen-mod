@@ -28,7 +28,7 @@ from ..ui.generate_button import ButtonStyles, get_button_dict
 
 class ClanScreen(Screens):
     max_sprites_displayed = (
-        400  # we don't want 100,000 sprites rendering at once. 400 is enough.
+        100  # we don't want 100,000 sprites rendering at once. 400 is enough.
     )
     cat_buttons = []
 
