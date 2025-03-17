@@ -1,20 +1,28 @@
-# a mod I made for clangen 0.12.2
+This is a mod I made for Clangen 0.12.2, largely to help with challenge runs, but also with several QoL improvements for how my friend and I like to play Clangen.
+
+It doesn't have a name right now, really it's just me adding whatever QoL feature I'd like to see into the game. More to come, probably... whenever I think of something.
+
+I don't expect anyone to use this mod, it's just on Github for version control purposes. This also means that I am unable to guarantee a fix if you do choose to use this mod but encounter a bug.
 ## Features (that I can remember lol)
-- In a cat's profile, several new things are displayed:
+- In a cat's profile, several new lines are displayed:
   - The cat's pelt colour
   - The cat's pelt pattern (Tortie base pattern, if cat is a tortie/calico)
   - The cat's skin colour
-  - shiny! :) if cat is at least one of the below:
+  - "shiny!" :) if cat is at least one of the below:
     - Male + Tortie
     - Heterochromic + Tortie
     - Marbled skin + Tortie
-- Lower max sprites displayed on the clan screen to 100 from 400
+- Lower max sprites displayed on the clan screen to 100 from 400, to reduce lag
 - Sort by favs option now available, cats that are favourited are displayed first in the list
-- Set threshold for shock to happen to the clan to be a percentage of the clan (4%) instead of a set number (originally 2)
+- Set death threshold for shock to be a percentage of the clan (4%) instead of a set number (originally 2)
 - Adds a new button next to the fav star, which can be used to toggle the colour of the fav
   - Currently, colours are: yellow (default), red, blue
-  - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)!
+  - Sort by favs accounts for these colours as well, and faved cats will be shown in the order above
+  - Relatively easy to add new colours as well
+  - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)! they're pretty
 - Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
+
+I didn't really intend to make this public at first, so a lot of stuff isn't polished, but it should work!
 # below is the standard readme
 # clangen
 
