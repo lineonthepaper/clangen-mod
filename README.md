@@ -1,3 +1,20 @@
+# a mod I made for clangen 0.12.2
+## Features (that I can remember lol)
+- In a cat's profile, several new things are displayed:
+  - The cat's pelt colour
+  - The cat's pelt pattern (Tortie base pattern, if cat is a tortie/calico)
+  - The cat's skin colour
+  - shiny! :) if cat is at least one of the below:
+    - Male + Tortie
+    - Heterochromic + Tortie
+    - Marbled skin + Tortie
+- Lower max sprites displayed on the clan screen to 100 from 400
+- Sort by favs option now available, cats that are favourited are displayed first in the list
+- Set threshold for shock to happen to the clan to be a percentage of the clan (4%) instead of a set number (originally 2)
+- Adds a new button next to the fav star, which can be used to toggle the colour of the fav
+  - Currently, colours are: yellow (default), red, blue
+- Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
+# below is the standard readme
 # clangen
 
 ### [Discord Server](https://discord.gg/clangen) || [Official website](https://clangen.io) || [Itch.io Page](https://sablesteel.itch.io/clan-gen-fan-edit) 
