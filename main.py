@@ -155,31 +155,10 @@ print("Version Name: ", VERSION_NAME)
 print("Running on commit " + get_version_info().version_number)
 
 # Load game
-from scripts.game_structure.game_essentials import game
-
-if game.config.get("disable_audio"):
-    os.environ["SDL_AUDIODRIVER"] = "dummy"
-    print("'disable_audio' set to True. Sound will be disabled.")
-
-import pygame
-
-pygame.display.init()
-pygame.font.init()
-pygame.display.set_caption("Clan Generator")
-from scripts.game_structure.screen_settings import toggle_fullscreen
-
-toggle_fullscreen(
-    fullscreen=game.settings["fullscreen"],
-    show_confirm_dialog=False,
-    ingame_switch=False,
-)
-
 from scripts.game_structure.audio import sound_manager, music_manager
-
-pygame.init()
-
 from scripts.game_structure.load_cat import load_cats, version_convert
 from scripts.game_structure.windows import SaveCheck
+from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import screen_scale, MANAGER, screen
 from scripts.game_structure.discord_rpc import _DiscordRPC
 from scripts.cat.sprites import sprites
@@ -188,6 +167,7 @@ from scripts.utility import (
     quit,
 )  # pylint: disable=redefined-builtin
 from scripts.debug_menu import debugmode
+import pygame
 
 
 # import all screens for initialization (Note - must be done after pygame_gui manager is created)
@@ -296,6 +276,8 @@ del finished_loading
 del loading_animation
 del load_data
 
+pygame.mixer.pre_init(buffer=44100)
+pygame.mixer.init()
 AllScreens.start_screen.screen_switches()
 
 # dev screen info now lives in scripts/screens/screens_core
@@ -373,11 +355,7 @@ while 1:
         game.all_screens[game.last_screen_forupdate].exit_screen()
         game.all_screens[game.current_screen].screen_switches()
         game.switch_screens = False
-    if (
-        not music_manager.audio_disabled
-        and not pygame.mixer.music.get_busy()
-        and not music_manager.muted
-    ):
+    if not pygame.mixer.music.get_busy() and not music_manager.muted:
         music_manager.play_queued()
 
     debugmode.update1(clock)
