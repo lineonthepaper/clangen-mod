@@ -13,6 +13,7 @@
 - Set threshold for shock to happen to the clan to be a percentage of the clan (4%) instead of a set number (originally 2)
 - Adds a new button next to the fav star, which can be used to toggle the colour of the fav
   - Currently, colours are: yellow (default), red, blue
+  - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)!
 - Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
 # below is the standard readme
 # clangen
