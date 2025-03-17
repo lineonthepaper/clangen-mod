@@ -109,12 +109,20 @@ class PatrolScreen(Screens):
                 for mate in selected_cat.mate:
                     if len(self.current_patrol) >= 6:
                         break
-                    self.current_patrol.append(Cat.all_cats.get(mate))
+                    if Cat.all_cats.get(mate) not in self.current_patrol:
+                        self.current_patrol.append(Cat.all_cats.get(mate))
             if selected_cat.apprentice:
                 for apprentice in selected_cat.apprentice:
                     if len(self.current_patrol) >= 6:
                         break
-                    self.current_patrol.append(Cat.all_cats.get(apprentice))
+                    if Cat.all_cats.get(apprentice) not in self.current_patrol:
+                        self.current_patrol.append(Cat.all_cats.get(apprentice))
+            if selected_cat.mentor:
+                for mentor in selected_cat.mentor:
+                    if len(self.current_patrol) >= 6:
+                        break
+                    if Cat.all_cats.get(mentor) not in self.current_patrol:
+                        self.current_patrol.append(Cat.all_cats.get(mentor))
 
 
     def handle_choose_cats_events(self, event):
