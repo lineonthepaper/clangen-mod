@@ -104,25 +104,29 @@ class PatrolScreen(Screens):
             # self.change_screen('list screen')
 
     def add_connected_cats(self, selected_cat):
+        def add_type(connected_cats):
+            if connected_cats:
+                # multiple, either mates or apprentices
+                if isinstance(connected_cats, list):
+                    for cat in connected_cats:
+                        if len(self.current_patrol) >= 6:
+                            break
+                        if Cat.all_cats.get(cat) not in self.current_patrol and Cat.all_cats.get(cat) in self.able_cats:
+                            self.current_patrol.append(Cat.all_cats.get(cat))
+                # single mentor
+                elif isinstance(connected_cats, str):
+                    if len(self.current_patrol) >= 6:
+                        return
+                    if Cat.all_cats.get(connected_cats) not in self.current_patrol and Cat.all_cats.get(connected_cats) in self.able_cats:
+                            self.current_patrol.append(Cat.all_cats.get(connected_cats))
+        
         if self.add_connected_on:
+            add_type(selected_cat.mate)
             if selected_cat.mate:
                 for mate in selected_cat.mate:
-                    if len(self.current_patrol) >= 6:
-                        break
-                    if Cat.all_cats.get(mate) not in self.current_patrol:
-                        self.current_patrol.append(Cat.all_cats.get(mate))
-            if selected_cat.apprentice:
-                for apprentice in selected_cat.apprentice:
-                    if len(self.current_patrol) >= 6:
-                        break
-                    if Cat.all_cats.get(apprentice) not in self.current_patrol:
-                        self.current_patrol.append(Cat.all_cats.get(apprentice))
-            if selected_cat.mentor:
-                for mentor in selected_cat.mentor:
-                    if len(self.current_patrol) >= 6:
-                        break
-                    if Cat.all_cats.get(mentor) not in self.current_patrol:
-                        self.current_patrol.append(Cat.all_cats.get(mentor))
+                    add_type(Cat.all_cats.get(mate).mate)
+            add_type(selected_cat.apprentice)
+            add_type(selected_cat.mentor)
 
 
     def handle_choose_cats_events(self, event):
