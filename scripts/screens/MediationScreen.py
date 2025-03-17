@@ -26,16 +26,6 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.get_arrow import get_arrow
 from ..ui.icon import Icon
 
-from pathlib import Path
-
-possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
-print(possible_colours_path)
-possible_colours = {}
-with open(possible_colours_path, "r") as f:
-    i = 0
-    for line in f:
-        possible_colours[i] = line.rstrip("\n")
-        i += 1
 
 class MediationScreen(Screens):
     def __init__(self, name=None):
@@ -415,12 +405,9 @@ class MediationScreen(Screens):
         if chunked_cats:
             for cat in chunked_cats[self.page - 1]:
                 if game.clan.clan_settings["show fav"] and cat.favourite:
-                    marker_colour = ""
-                    if cat.favourite_colour:
-                        marker_colour = possible_colours[cat.favourite_colour] + "_"
                     _temp = pygame.transform.scale(
                         pygame.image.load(
-                            f"resources/images/{marker_colour}fav_marker.png"
+                            f"resources/images/fav_marker.png"
                         ).convert_alpha(),
                         ui_scale_dimensions((50, 50)),
                     )

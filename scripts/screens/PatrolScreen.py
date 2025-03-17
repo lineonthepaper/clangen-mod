@@ -26,17 +26,6 @@ from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
-from pathlib import Path
-
-possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
-print(possible_colours_path)
-possible_colours = {}
-with open(possible_colours_path, "r") as f:
-    i = 0
-    for line in f:
-        possible_colours[i] = line.rstrip("\n")
-        i += 1
-
 
 class PatrolScreen(Screens):
     current_patrol = []
@@ -51,7 +40,6 @@ class PatrolScreen(Screens):
     selected_cat = None  # Holds selected cat.
     selected_apprentice_index = 0
     selected_mate_index = 0
-    
 
     def __init__(self, name=None):
         super().__init__(name)
@@ -79,7 +67,6 @@ class PatrolScreen(Screens):
         self.start_patrol_thread: Optional[PropagatingThread] = None
         self.proceed_patrol_thread: Optional[PropagatingThread] = None
         self.outcome_art = None
-        self.add_connected_on = False
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_DOUBLE_CLICKED:
@@ -103,20 +90,6 @@ class PatrolScreen(Screens):
             # elif event.key == pygame.K_RIGHT:
             # self.change_screen('list screen')
 
-    def add_connected_cats(self, selected_cat):
-        if self.add_connected_on:
-            if selected_cat.mate:
-                for mate in selected_cat.mate:
-                    if len(self.current_patrol) >= 6:
-                        break
-                    self.current_patrol.append(Cat.all_cats.get(mate))
-            if selected_cat.apprentice:
-                for apprentice in selected_cat.apprentice:
-                    if len(self.current_patrol) >= 6:
-                        break
-                    self.current_patrol.append(Cat.all_cats.get(apprentice))
-
-
     def handle_choose_cats_events(self, event):
         if event.ui_element == self.elements["random"]:
             if self.able_cats:
@@ -137,9 +110,6 @@ class PatrolScreen(Screens):
                     self.current_patrol.remove(self.selected_cat)
                 elif len(self.current_patrol) < 6:
                     self.current_patrol.append(self.selected_cat)
-                    
-                    # add connected cats
-                    self.add_connected_cats(self.selected_cat)
                 self.update_cat_images_buttons()
                 self.update_button()
         elif event.ui_element == self.elements["add_remove_cat"]:
@@ -147,9 +117,6 @@ class PatrolScreen(Screens):
                 self.current_patrol.remove(self.selected_cat)
             else:
                 self.current_patrol.append(self.selected_cat)
-
-                # add connected cats
-                self.add_connected_cats(self.selected_cat)
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["add_one"]:
@@ -166,14 +133,10 @@ class PatrolScreen(Screens):
                 else:
                     if self.able_cats:
                         self.selected_cat = choice(self.able_cats)
-                        
                     else:
                         print('WARNING: attempted to select random cat for patrol from empty list of able cats')
                 self.update_selected_cat()
                 self.current_patrol.append(self.selected_cat)
-
-                # add connected cats
-                self.add_connected_cats(self.selected_cat)
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["add_three"]:
@@ -186,18 +149,9 @@ class PatrolScreen(Screens):
                     ]
                     if len(able_no_med) < 3:
                         able_no_med = self.able_cats
-                    
-                    # add connected cats
-                    to_add = sample(able_no_med, k=3)
-                    self.current_patrol += to_add
-                    for selected_cat in to_add:
-                        self.add_connected_cats(selected_cat)
+                    self.current_patrol += sample(able_no_med, k=3)
                 else:
-                    # add connected cats
-                    to_add = sample(self.able_cats, k=3)
-                    self.current_patrol += to_add
-                    for selected_cat in to_add:
-                        self.add_connected_cats(selected_cat)
+                    self.current_patrol += sample(self.able_cats, k=3)
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["add_six"]:
@@ -235,14 +189,6 @@ class PatrolScreen(Screens):
             self.current_page -= 1
             self.update_cat_images_buttons()
             self.update_button()
-        
-        # add_connected button
-        elif event.ui_element == self.elements["add_connected"]:
-            self.add_connected_on = not self.add_connected_on
-            self.elements["add_connected"].change_object_id(
-                "#add_connected_on" if self.add_connected_on else "#add_connected_off"
-            )
-            print("add_connected is now:", self.add_connected_on)
         elif event.ui_element == self.elements["paw"]:
             if self.patrol_type == "training":
                 self.patrol_type = "general"
@@ -667,20 +613,6 @@ class PatrolScreen(Screens):
             manager=MANAGER,
         )
 
-        add_connected_rect = ui_scale(pygame.Rect((0, 100), (121, 30)))
-        self.elements["add_connected"] = UIImageButton(
-            add_connected_rect,
-            "",
-            object_id="#add_connected_on" if self.add_connected_on else "#add_connected_off",
-            manager=MANAGER,
-            anchors={
-                "top": "top",
-                "centerx": "centerx",
-                "bottom_target": self.elements["patrol_frame"],
-            }
-        )
-        del add_connected_rect
-
         # patrol type buttons - disabled for now
         self.elements["paw"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((323, 560), (34, 34))),
@@ -1057,14 +989,11 @@ class PatrolScreen(Screens):
         i = 0
         for cat in display_cats:
             if game.clan.clan_settings["show fav"] and cat.favourite:
-                marker_colour = ""
-                if cat.favourite_colour:
-                    marker_colour = possible_colours[cat.favourite_colour] + "_"
                 self.fav[str(i)] = pygame_gui.elements.UIImage(
                     ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                     pygame.transform.scale(
                         pygame.image.load(
-                            f"resources/images/{marker_colour}fav_marker.png"
+                            f"resources/images/fav_marker.png"
                         ).convert_alpha(),
                         ui_scale_dimensions((50, 50)),
                     ),

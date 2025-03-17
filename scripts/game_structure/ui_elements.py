@@ -22,16 +22,6 @@ from scripts.utility import (
     ui_scale_value,
 )
 
-from pathlib import Path
-
-possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
-possible_colours = {}
-with open(possible_colours_path, "r") as f:
-    i = 0
-    for line in f:
-        possible_colours[i] = line.rstrip("\n")
-        i += 1
-
 
 class UISurfaceImageButton(pygame_gui.elements.UIButton):
     """Subclass of the button class that allows you to pass in surfaces for the images directly."""
@@ -1177,18 +1167,8 @@ class UICatListDisplay(UIContainer):
             pygame.image.load(f"resources/images/fav_marker.png").convert_alpha(),
             ui_scale_dimensions((50, 50)),
         )
-        
-        self._favor_circles = {}
-        for colour in possible_colours.values():
-            self._favor_circles[colour] = pygame.transform.scale(
-                pygame.image.load(f"resources/images/{colour}_fav_marker.png").convert_alpha(),
-                ui_scale_dimensions((50, 50)),
-            )
-
         if game.settings["dark mode"]:
             self._favor_circle.set_alpha(150)
-            for key, circle in self._favor_circles.items():
-                circle.set_alpha(150)
 
         self.generate_grid()
 
@@ -1298,16 +1278,7 @@ class UICatListDisplay(UIContainer):
             fav_indexes = [
                 display_cats.index(cat) for cat in display_cats if cat.favourite
             ]
-            fav_colours = [
-                cat.favourite_colour for cat in display_cats if cat.favourite_colour != None
-            ]
-            # print(fav_colours)
-            # [self.create_favor_indicator(i, self.boxes[i]) for i in fav_indexes]
-            for i in range(len(fav_indexes)):
-                index = fav_indexes[i]
-                colour = fav_colours[i]
-                self.create_favor_indicator(index, self.boxes[index], colour)
-            
+            [self.create_favor_indicator(i, self.boxes[i]) for i in fav_indexes]
 
         # CAT SPRITE
         [
@@ -1347,36 +1318,15 @@ class UICatListDisplay(UIContainer):
             },
         )
 
-    def create_favor_indicator(self, i, container, colour):
-        # self.favor_indicator[f"favor{i}"] = pygame_gui.elements.UIImage(
-        #     ui_scale(pygame.Rect((0, 15), (50, 50))),
-        #     self._favor_circle,
-        #     object_id=f"favor_circle{i}",
-        #     container=container,
-        #     starting_height=1,
-        #     anchors={"centerx": "centerx"},
-        # )
-        # print(colour)
-        if colour in possible_colours:
-            colour_text = possible_colours[colour]
-            # print("setting colour", colour_text)
-            self.favor_indicator[f"favor{i}"] = pygame_gui.elements.UIImage(
-                ui_scale(pygame.Rect((0, 15), (50, 50))),
-                self._favor_circles[colour_text],
-                object_id=f"favor_circle{i}",
-                container=container,
-                starting_height=1,
-                anchors={"centerx": "centerx"},
-            )
-        else:
-            self.favor_indicator[f"favor{i}"] = pygame_gui.elements.UIImage(
-                ui_scale(pygame.Rect((0, 15), (50, 50))),
-                self._favor_circle,
-                object_id=f"favor_circle{i}",
-                container=container,
-                starting_height=1,
-                anchors={"centerx": "centerx"},
-            )
+    def create_favor_indicator(self, i, container):
+        self.favor_indicator[f"favor{i}"] = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((0, 15), (50, 50))),
+            self._favor_circle,
+            object_id=f"favor_circle{i}",
+            container=container,
+            starting_height=1,
+            anchors={"centerx": "centerx"},
+        )
 
     def _update_arrow_buttons(self):
         """

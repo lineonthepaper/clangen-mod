@@ -461,7 +461,6 @@ class ListScreen(Screens):
             "#filter_reverse_age_button",
             "#filter_id_button",
             "#filter_exp_button",
-            "#filter_favs_button",
             "#filter_death_button",
         ]:
             self.sort_by_buttons[object_id.strip("#")] = UIImageButton(
@@ -626,11 +625,6 @@ class ListScreen(Screens):
         # make sure cat list is the same every where else in the game.
         Cat.sort_cats(self.full_cat_list)
         Cat.sort_cats(Cat.all_cats_list)
-
-        # updates favs for previous saves
-        for cat in self.full_cat_list:
-            if cat.favourite and cat.favourite_colour is None:
-                cat.favourite_colour = 0
 
         # adding in the guide if necessary, this ensures the guide isn't affected by sorting as we always want them to
         # be the first cat on the list
