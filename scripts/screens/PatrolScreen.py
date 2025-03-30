@@ -105,6 +105,7 @@ class PatrolScreen(Screens):
 
     def add_connected_cats(self, selected_cat):
         def add_type(connected_cats):
+            # if there are any connected_cats
             if connected_cats:
                 # multiple, either mates or apprentices
                 if isinstance(connected_cats, list):
@@ -121,12 +122,70 @@ class PatrolScreen(Screens):
                             self.current_patrol.append(Cat.all_cats.get(connected_cats))
         
         if self.add_connected_on:
-            add_type(selected_cat.mate)
+            # if selected cat has a mate
             if selected_cat.mate:
-                for mate in selected_cat.mate:
-                    add_type(Cat.all_cats.get(mate).mate)
-            add_type(selected_cat.apprentice)
-            add_type(selected_cat.mentor)
+                add_type(selected_cat.mate)
+
+                # loop through mates
+                for mate_str in selected_cat.mate:
+                    # add mates of that mate
+                    add_type(Cat.all_cats.get(mate_str).mate)
+
+                    # add apprentices and mentors of that mate's mate
+                    for mate_str_2 in Cat.all_cats.get(mate_str).mate:
+                        if Cat.all_cats.get(mate_str_2).apprentice:
+                            add_type(Cat.all_cats.get(mate_str_2).apprentice)
+                        if Cat.all_cats.get(mate_str_2).mentor:
+                            add_type(Cat.all_cats.get(mate_str_2).mentor)
+
+                    # add apprentices of that mate
+                    if Cat.all_cats.get(mate_str).apprentice:
+                        add_type(Cat.all_cats.get(mate_str).apprentice)
+
+                    # add mentors of that mate
+                    if Cat.all_cats.get(mate_str).mentor:
+                        add_type(Cat.all_cats.get(mate_str).mentor)
+            
+            
+
+            # if selected cat has an apprentice
+            if selected_cat.apprentice:
+                add_type(selected_cat.apprentice)
+
+                # loop through apprentices
+                for apprentice_str in selected_cat.apprentice:
+                    # add mates of that apprentice
+                    if Cat.all_cats.get(apprentice_str).mate:
+                        add_type(Cat.all_cats.get(apprentice_str).mate)
+
+                        # add apprentices, mentors, mates of that apprentice's mate
+                        for mate_str in Cat.all_cats.get(apprentice_str).mate:
+                            if Cat.all_cats.get(mate_str).apprentice:
+                                add_type(Cat.all_cats.get(mate_str).apprentice)
+                            if Cat.all_cats.get(mate_str).mentor:
+                                add_type(Cat.all_cats.get(mate_str).mentor)
+                            if Cat.all_cats.get(mate_str).mate:
+                                add_type(Cat.all_cats.get(mate_str).mate)
+
+            
+
+            # if selected cat has a mentor
+            if selected_cat.mentor:
+                add_type(selected_cat.mentor)
+
+                # if selected cat's mentor has a mate
+                if Cat.all_cats.get(selected_cat.mentor).mate:
+                    add_type(Cat.all_cats.get(selected_cat.mentor).mate)
+
+                    # add apprentices and mentors of that mentor's mate
+                    for mate_str in Cat.all_cats.get(selected_cat.mentor).mate:
+                        if Cat.all_cats.get(mate_str).apprentice:
+                            add_type(Cat.all_cats.get(mate_str).apprentice)
+                        if Cat.all_cats.get(mate_str).mentor:
+                            add_type(Cat.all_cats.get(mate_str).mentor)
+                # add other apprentices of mentor
+                if len(Cat.all_cats.get(selected_cat.mentor).apprentice) > 1:
+                    add_type(Cat.all_cats.get(selected_cat.mentor).apprentice)
 
 
     def handle_choose_cats_events(self, event):
