@@ -98,6 +98,8 @@
     "#yellow.tool_tip": {"misc": {"rect_width": "125"}},
     "#red.tool_tip": {"misc": {"rect_width": "125"}},
     "#blue.tool_tip": {"misc": {"rect_width": "125"}},
+    "#teal.tool_tip": {"misc": {"rect_width": "125"}},
+    "#purple.tool_tip": {"misc": {"rect_width": "125"}},
     "#no_colour.tool_tip": {"misc": {"rect_width": "125"}},
     "#fav_cat_toggle_on.tool_tip": {"misc": {"rect_width": "125"}},
     "#fav_cat_toggle_off.tool_tip": {"misc": {"rect_width": "125"}},
@@ -1138,6 +1140,40 @@
             },
             "disabled_image": {
                 "path": "resources\/images\/buttons\/blue.png"
+            }
+        }
+    },
+    "#teal": {
+        "prototype": "@image_button",
+        "images": {
+            "normal_image": {
+                "path": "resources\/images\/buttons\/teal.png"
+            },
+            "hovered_image": {
+                "path": "resources\/images\/buttons\/teal_hover.png"
+            },
+            "selected_image": {
+                "path": "resources\/images\/buttons\/teal.png"
+            },
+            "disabled_image": {
+                "path": "resources\/images\/buttons\/teal.png"
+            }
+        }
+    },
+    "#purple": {
+        "prototype": "@image_button",
+        "images": {
+            "normal_image": {
+                "path": "resources\/images\/buttons\/purple.png"
+            },
+            "hovered_image": {
+                "path": "resources\/images\/buttons\/purple_hover.png"
+            },
+            "selected_image": {
+                "path": "resources\/images\/buttons\/purple.png"
+            },
+            "disabled_image": {
+                "path": "resources\/images\/buttons\/purple.png"
             }
         }
     },

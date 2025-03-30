@@ -1,3 +1,5 @@
 yellow
 red
 blue
+teal
+purple
