@@ -12,6 +12,7 @@ I don't expect anyone to use this mod, it's just on Github for version control p
     - Male + Tortie
     - Heterochromic + Tortie
     - Marbled skin + Tortie
+- Display moon the cat joined the clan, even if the cat is dead
 - Lower max sprites displayed on the clan screen to 100 from 400, to reduce lag
 - Sort by favs option now available, cats that are favourited are displayed first in the list
 - Set death threshold for shock to be a percentage of the clan (4%) instead of a set number (originally 2)
