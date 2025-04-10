@@ -3249,6 +3249,8 @@ class Cat:
                     print(f"setting {cat.name} colour to 0")
                     cat.favourite_colour = 0
             given_list.sort(key=lambda x: x.favourite_colour if x.favourite else math.inf)
+        elif game.sort_type == "name":
+            given_list.sort(key=lambda x: (x.name.prefix.lower() + x.name.suffix.lower()).lower())
         elif game.sort_type == "death":
             given_list.sort(key=lambda x: -1 * int(x.dead_for))
 
@@ -3282,6 +3284,8 @@ class Cat:
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: -1 * int(x.ID))
             elif game.sort_type == "favs":
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: x.favourite_colour if x.favourite else math.inf)
+            elif game.sort_type == "name":
+                bisect.insort(Cat.all_cats_list, c, key=lambda x: (x.name.prefix + x.name.suffix).lower())
             elif game.sort_type == "death":
                 bisect.insort(Cat.all_cats_list, c, key=lambda x: -1 * int(x.dead_for))
         except (TypeError, NameError):

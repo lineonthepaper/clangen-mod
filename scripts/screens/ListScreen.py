@@ -462,6 +462,7 @@ class ListScreen(Screens):
             "#filter_id_button",
             "#filter_exp_button",
             "#filter_favs_button",
+            "#filter_name_button",
             "#filter_death_button",
         ]:
             self.sort_by_buttons[object_id.strip("#")] = UIImageButton(

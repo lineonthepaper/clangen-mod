@@ -1384,6 +1384,22 @@
             }
         }
     },
+    "#filter_by_name_button": {
+        "images": {
+            "normal_image": {
+                "path": "resources\/images\/buttons\/filtered_by_name.png"
+            },
+            "hovered_image": {
+                "path": "resources\/images\/buttons\/filtered_by_name_hover.png"
+            },
+            "selected_image": {
+                "path": "resources\/images\/buttons\/filtered_by_name_hover.png"
+            },
+            "disabled_image": {
+                "path": "resources\/images\/buttons\/filtered_by_name_hover.png"
+            }
+        }
+    },
     "#filter_rank_button": {
         "images": {
             "normal_image": {
@@ -1477,6 +1493,22 @@
             },
             "disabled_image": {
                 "path": "resources\/images\/buttons\/filter_favs_hover.png"
+            }
+        }
+    },
+    "#filter_name_button": {
+        "images": {
+            "normal_image": {
+                "path": "resources\/images\/buttons\/filter_name.png"
+            },
+            "hovered_image": {
+                "path": "resources\/images\/buttons\/filter_name_hover.png"
+            },
+            "selected_image": {
+                "path": "resources\/images\/buttons\/filter_name.png"
+            },
+            "disabled_image": {
+                "path": "resources\/images\/buttons\/filter_name_hover.png"
             }
         }
     },
