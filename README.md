@@ -23,6 +23,8 @@ I don't expect anyone to use this mod, it's just on Github for version control p
   - Relatively easy to add new colours as well
   - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)! they're pretty
 - Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
+## Bugfixes (at least I think they're bugs)
+- Undo a(n unintentional?) change made in later versions where kits and apprentices sent to the Dark Forest don't retain their suffixes, and instead get their full warrior names
 
 I didn't really intend to make this public at first, so a lot of stuff isn't polished, but it should work!
 # below is the standard readme
