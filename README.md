@@ -18,7 +18,7 @@ I don't expect anyone to use this mod, it's just on Github for version control p
 - Sort by name option added, sorts by ascending alphabetical order
 - Set death threshold for shock to be a percentage of the clan (4%) instead of a set number (originally 2)
 - Adds a new button next to the fav star, which can be used to toggle the colour of the fav
-  - Currently, colours are: yellow (default), red, blue
+  - Currently, colours are: yellow (default), red, blue, teal, purple
   - Sort by favs accounts for these colours as well, and faved cats will be shown in the order above
   - Relatively easy to add new colours as well
   - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)! they're pretty
