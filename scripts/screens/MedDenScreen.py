@@ -16,6 +16,7 @@ from scripts.utility import (
     get_alive_status_cats,
     shorten_text_to_fit,
     get_living_clan_cat_count,
+    ui_scale_dimensions,
 )
 from .Screens import Screens
 from ..conditions import get_amount_cat_for_one_medic, medical_cats_condition_fulfilled
@@ -25,6 +26,16 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.get_arrow import get_arrow
 from ..ui.icon import Icon
 
+from pathlib import Path
+
+possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
+print(possible_colours_path)
+possible_colours = {}
+with open(possible_colours_path, "r") as f:
+    i = 0
+    for line in f:
+        possible_colours[i] = line.rstrip("\n")
+        i += 1
 
 class MedDenScreen(Screens):
     cat_buttons = {}
@@ -66,6 +77,8 @@ class MedDenScreen(Screens):
         self.tab_list = self.in_den_cats
 
         self.herbs = {}
+
+        self.fav = {}
 
         self.open_tab = None
 
@@ -546,6 +559,21 @@ class MedDenScreen(Screens):
                         condition_list.extend(cat.permanent_condition.keys())
             conditions = ",<br>".join(condition_list)
 
+            if game.clan.clan_settings["show fav"] and cat.favourite:
+                marker_colour = ""
+                if cat.favourite_colour:
+                    marker_colour = possible_colours[cat.favourite_colour] + "_"
+                self.fav[str(i)] = pygame_gui.elements.UIImage(
+                    ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
+                    pygame.transform.scale(
+                        pygame.image.load(
+                            f"resources/images/{marker_colour}fav_marker.png"
+                        ).convert_alpha(),
+                        ui_scale_dimensions((50, 50)),
+                    ),
+                )
+                self.fav[str(i)].disable()
+
             self.cat_buttons["able_cat" + str(i)] = UISpriteButton(
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 cat.sprite,
@@ -723,3 +751,7 @@ class MedDenScreen(Screens):
 
         self.cat_names = []
         self.cat_buttons = {}
+
+        for marker in self.fav:
+            self.fav[marker].kill()
+        self.fav = {}
