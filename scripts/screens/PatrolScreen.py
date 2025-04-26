@@ -965,6 +965,22 @@ class PatrolScreen(Screens):
         pos_y = 475
         for u in range(6):
             if u < len(self.patrol_obj.patrol_cats):
+                cat = self.patrol_obj.patrol_cats[u]
+                if game.clan.clan_settings["show fav"] and cat.favourite:
+                    marker_colour = ""
+                    if cat.favourite_colour:
+                        marker_colour = possible_colours[cat.favourite_colour] + "_"
+                    self.fav["cat" + str(u)] = pygame_gui.elements.UIImage(
+                        ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
+                        pygame.transform.scale(
+                            pygame.image.load(
+                                f"resources/images/{marker_colour}fav_marker.png"
+                            ).convert_alpha(),
+                            ui_scale_dimensions((50, 50)),
+                        ),
+                    )
+                    self.fav["cat" + str(u)].disable()
+
                 self.elements["cat" + str(u)] = pygame_gui.elements.UIImage(
                     ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                     self.patrol_obj.patrol_cats[u].sprite,
@@ -1165,6 +1181,20 @@ class PatrolScreen(Screens):
             pos_x = 525
             i = 0
             for cat in self.current_patrol:
+                if game.clan.clan_settings["show fav"] and cat.favourite:
+                    marker_colour = ""
+                    if cat.favourite_colour:
+                        marker_colour = possible_colours[cat.favourite_colour] + "_"
+                    self.fav["patrol_cat" + str(i)] = pygame_gui.elements.UIImage(
+                        ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
+                        pygame.transform.scale(
+                            pygame.image.load(
+                                f"resources/images/{marker_colour}fav_marker.png"
+                            ).convert_alpha(),
+                            ui_scale_dimensions((50, 50)),
+                        ),
+                    )
+                    self.fav["patrol_cat" + str(i)].disable()
                 self.cat_buttons["patrol_cat" + str(i)] = UISpriteButton(
                     ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                     pygame.transform.scale(cat.sprite, ui_scale_dimensions((50, 50)))

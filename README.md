@@ -26,6 +26,8 @@ I don't expect anyone to use this mod, it's just on Github for version control p
 - Display fav markers of:
   - outsider cats in leader den screen
   - sick cats in medicine cat den screen
+  - cats in current patrol before patrol is started
+  - cats in current patrol during patrol
 - Sort outsider cats by current selected sort in leader den screen (rank, ID, name, etc.)
 ## Bugfixes (at least I think they're bugs)
 - Undo a(n unintentional?) change made in later versions where kits and apprentices sent to the Dark Forest don't retain their suffixes, and instead get their full warrior names
