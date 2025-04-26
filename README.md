@@ -18,11 +18,13 @@ I don't expect anyone to use this mod, it's just on Github for version control p
 - Sort by name option added, sorts by ascending alphabetical order
 - Set death threshold for shock to be a percentage of the clan (4%) instead of a set number (originally 2)
 - Adds a new button next to the fav star, which can be used to toggle the colour of the fav
-  - Currently, colours are: yellow (default), red, blue
+  - Currently, colours are: yellow (default), red, blue, teal, purple
   - Sort by favs accounts for these colours as well, and faved cats will be shown in the order above
   - Relatively easy to add new colours as well
   - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)! they're pretty
 - Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
+## Bugfixes (at least I think they're bugs)
+- Undo a(n unintentional?) change made in later versions where kits and apprentices sent to the Dark Forest don't retain their suffixes, and instead get their full warrior names
 
 I didn't really intend to make this public at first, so a lot of stuff isn't polished, but it should work!
 # below is the standard readme
