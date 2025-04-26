@@ -20,9 +20,18 @@ from ..game_structure.windows import SaveAsImage
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.get_arrow import get_arrow
 
+from pathlib import Path
 
 class SpriteInspectScreen(Screens):
     cat_life_stages = ["newborn", "kitten", "adolescent", "adult", "senior"]
+
+    possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
+    possible_colours = {}
+    with open(possible_colours_path, "r") as f:
+        i = 0
+        for line in f:
+            possible_colours[i] = line.rstrip("\n")
+            i += 1
 
     def __init__(self, name=None):
         self.back_button = None
@@ -129,6 +138,25 @@ class SpriteInspectScreen(Screens):
                 self.cat_elements["favourite_button"].set_tooltip(
                     "Remove favorite" if self.the_cat.favourite else "Mark as favorite"
                 )
+                if self.the_cat.favourite:
+                    self.the_cat.favourite_colour = 0
+                    self.cat_elements["favourite_colour"].change_object_id(
+                    "#" + self.possible_colours[self.the_cat.favourite_colour]
+                    )
+                    self.cat_elements["favourite_colour"].set_tooltip("Click to toggle")
+                    # print("now faved colour:", self.possible_colours[self.the_cat.favourite_colour])
+                else:
+                    self.the_cat.favourite_colour = None
+                    self.cat_elements["favourite_colour"].change_object_id("#no_colour")
+                    self.cat_elements["favourite_colour"].set_tooltip(None)
+            
+            elif event.ui_element == self.cat_elements["favourite_colour"]:
+                if self.the_cat.favourite:
+                    self.the_cat.favourite_colour = (self.the_cat.favourite_colour + 1) % len(self.possible_colours)
+                    self.cat_elements["favourite_colour"].change_object_id(
+                        "#" + self.possible_colours[self.the_cat.favourite_colour]
+                    )
+                    self.cat_elements["favourite_colour"].set_tooltip("Click to toggle")
 
         return super().handle_event(event)
 
@@ -295,6 +323,25 @@ class SpriteInspectScreen(Screens):
             anchors={"right": "right", "right_target": self.cat_elements["cat_name"]},
         )
         del favorite_button_rect
+
+        favourite_colour_rect = ui_scale(pygame.Rect((0, 0), (28, 28)))
+        favourite_colour_rect.topright = ui_scale_offset((-10, 63))
+        self.cat_elements["favourite_colour"] = UIImageButton(
+            favourite_colour_rect,
+            "",
+            object_id="#" + self.possible_colours[self.the_cat.favourite_colour] if self.the_cat.favourite else "#no_colour",
+            manager=MANAGER,
+            tool_tip_text="Click to toggle"
+            if self.the_cat.favourite
+            else None,
+            starting_height=2,
+            anchors={
+                "right": "right",
+                "right_target": self.cat_elements["favourite_button"],
+            },
+        )
+        self.cat_elements["favourite_colour"].rebuild()
+        del favourite_colour_rect
 
         # Write the checkboxes. The text is set up in switch_screens.
         self.update_checkboxes()
