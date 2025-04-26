@@ -30,6 +30,17 @@ from scripts.utility import (
     ui_scale_dimensions,
 )
 
+from pathlib import Path
+
+possible_colours_path = Path.cwd() / "scripts/possible_fav_colours.txt"
+print(possible_colours_path)
+possible_colours = {}
+with open(possible_colours_path, "r") as f:
+    i = 0
+    for line in f:
+        possible_colours[i] = line.rstrip("\n")
+        i += 1
+
 
 class LeaderDenScreen(Screens):
     def __init__(self, name=None):
@@ -68,6 +79,8 @@ class LeaderDenScreen(Screens):
 
         self.outsider_cat_list_container = None
         self.outsider_cat_buttons = {}
+
+        self.fav = {}
 
     def handle_event(self, event):
         """
@@ -985,12 +998,31 @@ class LeaderDenScreen(Screens):
         for ele in self.outsider_cat_buttons:
             self.outsider_cat_buttons[ele].kill()
         self.outsider_cat_buttons = {}
+        for marker in self.fav:
+            self.fav[marker].kill()
+        self.fav = {}
 
         pos_x = 0
         pos_y = 0
         i = 0
 
         for cat in display_cats:
+            if game.clan.clan_settings["show fav"] and cat.favourite:
+                marker_colour = ""
+                if cat.favourite_colour:
+                    marker_colour = possible_colours[cat.favourite_colour] + "_"
+                self.fav[f"sprite{str(i)}"] = pygame_gui.elements.UIImage(
+                    ui_scale(pygame.Rect((5 + pos_x, pos_y), (50, 50))),
+                    pygame.transform.scale(
+                        pygame.image.load(
+                            f"resources/images/{marker_colour}fav_marker.png"
+                        ).convert_alpha(),
+                        ui_scale_dimensions((50, 50)),
+                    ),
+                    container=self.outsider_cat_list_container,
+                )
+                self.fav[f"sprite{str(i)}"].disable()
+
             self.outsider_cat_buttons[f"sprite{str(i)}"] = UISpriteButton(
                 ui_scale(pygame.Rect((5 + pos_x, pos_y), (50, 50))),
                 cat.sprite,
