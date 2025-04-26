@@ -24,6 +24,7 @@ I don't expect anyone to use this mod, it's just on Github for version control p
   - Button icons made by my friend [Aethan](https://bsky.app/profile/silencescribbles.bsky.social)! they're pretty
 - Adds a new button to the patrol screen that can be toggled on and off, to automatically add apprentices and mates to a patrol when a cat is added via double click, Add Cat, +1, or +3
 - Display fav markers of outsider cats in leader den screen
+- Sort outsider cats by current selected sort in leader den screen (rank, ID, name, etc.)
 ## Bugfixes (at least I think they're bugs)
 - Undo a(n unintentional?) change made in later versions where kits and apprentices sent to the Dark Forest don't retain their suffixes, and instead get their full warrior names
 
