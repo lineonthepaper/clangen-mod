@@ -956,7 +956,7 @@ class LeaderDenScreen(Screens):
         # get cats for list
         outsiders = [
             i
-            for i in Cat.all_cats.values()
+            for i in Cat.all_cats_list
             if i.outside and not i.dead and not i.driven_out
         ]
 
